@@ -30,5 +30,5 @@ Rails.application.routes.draw do
     end
   end
   resources :relationships, only: [:create, :destroy]
-  resources :likes, only: [:index, :destroy]
+  resources :likes, only: [:index, :create, :destroy]
 end

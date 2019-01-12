@@ -18,10 +18,8 @@
       <li class="<%= 'active' if current_page?(likes_user_path(@user)) %>"><%= link_to likes_user_path(@user) do %>Likes <span class="badge"><%= @count_likes %></span><% end %></li>
     </ul>
     
-    <% @likes.each do |like| %>
-      <% micropost = Micropost.find(like.micropost_id) %>
-      <p><% micropost.content %></p>
-     <div><%= link_to "お気に入り削除",like_path(like), method: :delete %></div>
+    <% @microposts_liked.each do |micropost_liked| %>
+      <p><%= micropost_liked.content %></p>
     <% end %>
   </div>
 </div>

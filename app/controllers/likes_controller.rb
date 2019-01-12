@@ -2,31 +2,25 @@ class LikesController < ApplicationController
   before_action :require_user_logged_in
   
   def index
-    @user = current_user
-    @likes = Like.where(user_id: @user.id).all
+    @user = User.find(params[:id])
+    @microposts_liked = @user.microposts_liked.page(params[:page])
+    counts(@user)
   end
 
   
   def create
-    @user_id = current_user.id
-    @micropost_id = Micropost.find(params[:id]).id
-    @like = Like.new(micropost_id: @micropost_id, user_id: @user_id)
-      if @like.save
-        flash[:success] = 'お気に入りしました。'
-        redirect_to user_path(current_user)
-      end   
+    micropost = Micropost.find(params[:micropost_id])
+    current_user.favorite(micropost)
+    flash[:success] = 'お気に入りしました。'
+    redirect_to user_path(current_user)
+      
   end
 
   def destroy
-    @like = Like.find(params[:id])
-    if @like.destroy
-      flash[:success] = 'お気に入りを解除しました。'
-      redirect_to user_path(current_user)
-    end
+    micropost = Micropost.find(params[:micropost_id])
+    current_user.unfavorite(micropost)    
+    flash[:success] = 'お気に入りを解除しました。'
+    redirect_to user_path(current_user)
   end 
-  
-  
-  
- 
 end
   
